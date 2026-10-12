@@ -1,5 +1,4 @@
 import express from "express";
-import { randomUUID } from "node:crypto";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { registerEasypanelTools } from "./tools/easypanel.js";
@@ -37,10 +36,10 @@ app.post("/mcp", async (req, res) => {
     return;
   }
 
-  // Stateless mode: a fresh server + transport per request.
+  // Stateless mode: a fresh server + transport per request, no session tracking.
   const server = buildServer();
   const transport = new StreamableHTTPServerTransport({
-    sessionIdGenerator: () => randomUUID(),
+    sessionIdGenerator: undefined,
   });
 
   res.on("close", () => {
